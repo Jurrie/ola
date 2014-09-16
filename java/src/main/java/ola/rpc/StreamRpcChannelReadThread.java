@@ -94,7 +94,7 @@ public class StreamRpcChannelReadThread extends Thread {
 	}
     }
 
-    private Message handleRequest(RpcMessage request)
+    private void handleRequest(RpcMessage request)
 	    throws InvalidProtocolBufferException {
 	MethodDescriptor methodDescriptor = this.service.getDescriptorForType()
 		.findMethodByName(request.getName());
@@ -116,10 +116,9 @@ public class StreamRpcChannelReadThread extends Thread {
 
 	if (controller.failed()) {
 	    logger.warning("RPC Call failed: " + controller.errorText());
-	    return null;
+	    return;
 	}
 
-	return outputMessage[0];
     }
 
     @Override
