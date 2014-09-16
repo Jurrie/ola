@@ -66,14 +66,14 @@ public class StreamRpcChannelReadThread extends Thread {
 
     private void handleResponse(final RpcMessage response)
 	    throws InvalidProtocolBufferException {
-	if (!expectedResponses.containsKey(response.getId())) {
+	final ExpectedResponse expectedResponse = expectedResponses
+		.remove(response.getId());
+
+	if (expectedResponse == null) {
 	    logger.warning("Received unexpected response message with id "
 		    + response.getId());
 	    return;
 	}
-
-	final ExpectedResponse expectedResponse = expectedResponses
-		.remove(response.getId());
 
 	RpcCallback<Message> done = expectedResponse.done;
 	RpcController controller = expectedResponse.controller;
